@@ -10,9 +10,6 @@ The main focus is to create a mobile application with Xamarin. For this reason I
 - [ ] **mobile xamarin front end**
 - [ ] sql for persistance
 
-stretch:
-* docker for easy 'containerization'
-* deploy CI/CD
 
 Business Requirements
 ---
@@ -24,4 +21,8 @@ Business Requirements
  - [ ] add completion
  - [ ] remove completion
  - [ ] delete one
- - [ ] delete all completed
+
+stretch:
+- [ ] docker for easy 'containerization'
+- [ ] deploy CI/CD
+- [ ] delete all completed
