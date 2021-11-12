@@ -33,6 +33,7 @@ class RandomWords extends StatefulWidget {
 
 class _RandomWordsState extends State<RandomWords> {
   final _wordList = <WordPair>[];
+  final _starred = <WordPair>{};
   final _biggerFont = const TextStyle(fontSize: 18);
 
   @override
@@ -67,10 +68,35 @@ class _RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+    final isStarred = _starred.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
         style: _biggerFont,
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: isStarred
+                ? const Icon(Icons.star)
+                : const Icon(Icons.star_border),
+            color: isStarred ? Colors.green : Colors.lightGreen,
+            tooltip: isStarred ? 'Remove from starred' : 'Starred',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_sharp),
+            color: Colors.red,
+            tooltip: isStarred ? 'Remove from starred' : 'Starred',
+            onPressed: () {
+              setState(() {
+                _wordList.remove(pair);
+              });
+            },
+          ),
+        ],
       ),
     );
   }
