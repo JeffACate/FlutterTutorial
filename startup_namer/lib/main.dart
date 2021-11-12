@@ -68,7 +68,7 @@ class _RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
-    final isStarred = _starred.contains(pair);
+    var isStarred = _starred.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
@@ -84,12 +84,22 @@ class _RandomWordsState extends State<RandomWords> {
                 : const Icon(Icons.star_border),
             color: isStarred ? Colors.green : Colors.lightGreen,
             tooltip: isStarred ? 'Remove from starred' : 'Starred',
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                if (isStarred) {
+                  _starred.remove(pair);
+                  isStarred = false;
+                } else {
+                  _starred.add(pair);
+                  isStarred = true;
+                }
+              });
+            },
           ),
           IconButton(
             icon: const Icon(Icons.delete_sharp),
             color: Colors.red,
-            tooltip: isStarred ? 'Remove from starred' : 'Starred',
+            tooltip: 'Delete',
             onPressed: () {
               setState(() {
                 _wordList.remove(pair);
