@@ -8,9 +8,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final wordPair = WordPair.random();
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Welcome to Flutter',
-      home: RandomWords(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
+        ),
+      ),
+      home: const RandomWords(),
       // home: Scaffold(
       //   appBar: AppBar(
       //     centerTitle: true,
@@ -40,14 +46,45 @@ class _RandomWordsState extends State<RandomWords> {
   Widget build(BuildContext context) {
     // final wordPair = WordPair.random();
     // return Text('Hello, the new word is: ${wordPair.asPascalCase}');
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Random Name Generator'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list),
+            onPressed: _pushSaved,
+            tooltip: 'Starred Suggestions',
+          ),
+        ],
       ),
       body: _buildWordList(),
     );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      final tiles = _starred.map(
+        (pair) {
+          return ListTile(
+            title: Text(
+              pair.asPascalCase,
+              style: _biggerFont,
+            ),
+          );
+        },
+      );
+      final divided = tiles.isNotEmpty
+          ? ListTile.divideTiles(context: context, tiles: tiles).toList()
+          : <Widget>[];
+
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Starred Suggestions'),
+        ),
+        body: ListView(children: divided),
+      );
+    }));
   }
 
   Widget _buildWordList() {
@@ -82,7 +119,7 @@ class _RandomWordsState extends State<RandomWords> {
             icon: isStarred
                 ? const Icon(Icons.star)
                 : const Icon(Icons.star_border),
-            color: isStarred ? Colors.green : Colors.lightGreen,
+            color: Colors.teal,
             tooltip: isStarred ? 'Remove from starred' : 'Starred',
             onPressed: () {
               setState(() {
@@ -102,6 +139,9 @@ class _RandomWordsState extends State<RandomWords> {
             tooltip: 'Delete',
             onPressed: () {
               setState(() {
+                if (_starred.contains(pair)) {
+                  _starred.remove(pair);
+                }
                 _wordList.remove(pair);
               });
             },
